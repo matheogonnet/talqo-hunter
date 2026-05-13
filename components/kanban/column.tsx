@@ -1,0 +1,60 @@
+'use client'
+
+import { useDroppable } from '@dnd-kit/core'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { KanbanCard } from './card'
+import type { ProspectStatus, ProspectWithDecisionMakers } from '@/lib/types/database'
+
+interface KanbanColumnProps {
+  status: ProspectStatus
+  label: string
+  prospects: ProspectWithDecisionMakers[]
+}
+
+export function KanbanColumn({ status, label, prospects }: KanbanColumnProps) {
+  const { setNodeRef, isOver } = useDroppable({
+    id: status,
+    data: { status },
+  })
+
+  return (
+    <div className="flex-shrink-0 w-64 flex flex-col gap-2">
+      {/* Header colonne */}
+      <div className="flex items-center justify-between px-1">
+        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          {label}
+        </span>
+        {prospects.length > 0 && (
+          <span className="text-xs text-muted-foreground/60 bg-muted/40 px-1.5 py-0.5 rounded-full">
+            {prospects.length}
+          </span>
+        )}
+      </div>
+
+      {/* Zone de drop */}
+      <div
+        ref={setNodeRef}
+        className={`flex-1 min-h-[120px] rounded-xl border-2 border-dashed transition-colors p-1.5 space-y-1.5 ${
+          isOver
+            ? 'border-primary/50 bg-primary/5'
+            : 'border-border/40 bg-muted/10'
+        }`}
+      >
+        <SortableContext
+          items={prospects.map((p) => p.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          {prospects.map((prospect) => (
+            <KanbanCard key={prospect.id} prospect={prospect} />
+          ))}
+        </SortableContext>
+
+        {prospects.length === 0 && (
+          <div className="h-full flex items-center justify-center py-6">
+            <p className="text-xs text-muted-foreground/30">Vide</p>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
