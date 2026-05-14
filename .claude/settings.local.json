@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Read(//c/Users/mathe/Documents/**)",
-      "Bash(npx create-next-app@latest talqo-hunter-app --typescript --tailwind --app --no-src-dir --import-alias \"@/*\" --yes)"
+      "Bash(npx create-next-app@latest talqo-hunter-app --typescript --tailwind --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "mcp__scheduled-tasks__update_scheduled_task",
+      "Bash(npm run *)"
     ]
   }
 }

@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { AUTH_DISABLED } from '@/lib/auth-mode'
 
 /**
  * Proxy (anciennement middleware) qui :
@@ -10,6 +11,10 @@ import { NextResponse, type NextRequest } from 'next/server'
  * Renamed from middleware.ts → proxy.ts for Next.js 16 compatibility
  */
 export async function proxy(request: NextRequest) {
+  if (AUTH_DISABLED) {
+    return NextResponse.next()
+  }
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
@@ -42,6 +47,7 @@ export async function proxy(request: NextRequest) {
   // Routes publiques : toujours accessibles
   const isPublicRoute =
     pathname.startsWith('/login') ||
+    pathname.startsWith('/auth/callback') || // magic link → échange PKCE avant session
     pathname.startsWith('/api/cron/') || // protégé par CRON_SECRET, pas par auth
     pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon')

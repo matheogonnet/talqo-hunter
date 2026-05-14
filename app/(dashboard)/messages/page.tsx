@@ -64,7 +64,7 @@ export default async function MessagesPage() {
           return (
             <div
               key={msg.id}
-              className="rounded-lg border border-border bg-card p-4 space-y-2"
+              className="rounded-lg border border-border bg-white p-4 space-y-2"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
@@ -92,7 +92,7 @@ export default async function MessagesPage() {
                     {msg.message_type}
                   </Badge>
                   {msg.was_sent && (
-                    <Badge className="text-xs bg-emerald-500/15 text-emerald-400 border-emerald-500/30">
+                    <Badge className="text-xs bg-emerald-100 text-emerald-700 border-emerald-200">
                       Envoyé
                     </Badge>
                   )}

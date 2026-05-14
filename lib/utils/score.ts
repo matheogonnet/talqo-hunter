@@ -23,14 +23,14 @@ export function companyInitials(name: string): string {
  */
 export function avatarColor(name: string): string {
   const colors = [
-    'bg-blue-500/20 text-blue-400',
-    'bg-violet-500/20 text-violet-400',
-    'bg-emerald-500/20 text-emerald-400',
-    'bg-amber-500/20 text-amber-400',
-    'bg-rose-500/20 text-rose-400',
-    'bg-cyan-500/20 text-cyan-400',
-    'bg-orange-500/20 text-orange-400',
-    'bg-pink-500/20 text-pink-400',
+    'bg-blue-100 text-blue-700',
+    'bg-violet-100 text-violet-700',
+    'bg-emerald-100 text-emerald-700',
+    'bg-amber-100 text-amber-700',
+    'bg-rose-100 text-rose-700',
+    'bg-cyan-100 text-cyan-700',
+    'bg-orange-100 text-orange-700',
+    'bg-pink-100 text-pink-700',
   ]
   const idx = name
     .split('')

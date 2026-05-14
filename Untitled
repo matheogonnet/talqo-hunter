@@ -1,0 +1,34 @@
+# ============================================================
+# Talqo Hunter — Variables d'environnement
+# Copier ce fichier en .env.local et remplir les valeurs
+# ============================================================
+
+# ------- Supabase -------
+# Trouvé dans : Project Settings > API
+NEXT_PUBLIC_SUPABASE_URL=https://XXXXXX.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+# ------- Claude API (Anthropic) -------
+# Trouvé dans : https://console.anthropic.com/keys
+ANTHROPIC_API_KEY=sk-ant-api03-...
+
+# ------- Resend (email) -------
+# Trouvé dans : https://resend.com/api-keys
+RESEND_API_KEY=re_...
+# L'email qui reçoit les notifications de nouveaux prospects
+NOTIFICATION_EMAIL=matheo@example.com
+
+# ------- Sécurité Cron -------
+# Générer avec : openssl rand -hex 32
+# Ce secret protège l'endpoint /api/cron/discover-prospects
+CRON_SECRET=your-super-secret-cron-key-here
+
+# ------- Talqo Brand (pour les messages) -------
+TALQO_FOUNDER_NAME=Mathéo
+TALQO_FOUNDER_ROLE=Consultant @Deloitte
+
+# ------- App URL -------
+# En local : http://localhost:3000
+# En prod : https://outils.matheo.fr
+NEXT_PUBLIC_APP_URL=http://localhost:3000

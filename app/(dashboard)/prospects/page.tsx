@@ -106,16 +106,16 @@ export default async function ProspectsPage() {
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
-    new: 'bg-slate-500/15 text-slate-400',
-    connection_sent: 'bg-blue-500/15 text-blue-400',
-    connected: 'bg-blue-500/20 text-blue-300',
-    m1_sent: 'bg-violet-500/15 text-violet-400',
-    replied: 'bg-amber-500/15 text-amber-400',
-    m2_sent: 'bg-orange-500/15 text-orange-400',
-    m3_sent: 'bg-rose-500/15 text-rose-400',
-    beta_signed: 'bg-emerald-500/15 text-emerald-400',
-    rejected: 'bg-red-500/15 text-red-400',
-    archived: 'bg-slate-500/10 text-slate-500',
+    new: 'bg-slate-100 text-slate-600',
+    connection_sent: 'bg-blue-100 text-blue-700',
+    connected: 'bg-blue-100 text-blue-800',
+    m1_sent: 'bg-violet-100 text-violet-700',
+    replied: 'bg-amber-100 text-amber-700',
+    m2_sent: 'bg-orange-100 text-orange-700',
+    m3_sent: 'bg-rose-100 text-rose-700',
+    beta_signed: 'bg-emerald-100 text-emerald-700',
+    rejected: 'bg-red-100 text-red-700',
+    archived: 'bg-slate-100 text-slate-400',
   }
   const labels: Record<string, string> = {
     new: 'Nouveau',

@@ -13,14 +13,13 @@ App web autonome qui découvre toutes les 6h des startups françaises P1 (10-150
 | DB | Supabase (Postgres + Auth + RLS) | Stack existante chez toi |
 | Cron | Vercel Cron Jobs | Gratuit jusqu'à 2 jobs en plan Hobby |
 | LLM | Claude API (Sonnet 4.6 + Haiku 4.5) | Discovery sur Sonnet, génération sur Haiku |
-| LinkedIn data | Proxycurl API | Conformité gérée, ~10€/mois pour 100 lookups |
+| LinkedIn / décideurs | Non retenu de fournisseur tiers | Enrichissement manuel ou source à définir plus tard |
 | Email | Resend | 3000 mails/mois gratuits |
 | Hosting | Vercel | Auto-deploy depuis GitHub |
 | Domaine | outils.matheo.fr (à configurer) | Sous-domaine de ton domaine perso |
 
-**Coût mensuel estimé** : 25-40€
+**Coût mensuel estimé** : 15-30€
 - Claude API : 10-20€ (selon volume)
-- Proxycurl : 10€ (100 lookups)
 - Vercel : 0€ (Hobby plan suffit)
 - Supabase : 0€ (Free tier 500MB)
 - Resend : 0€
@@ -172,10 +171,10 @@ CREATE INDEX idx_decision_makers_status ON decision_makers(connection_status);
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│ ÉTAPE 4 — Enrichissement décideurs (Proxycurl)              │
+│ ÉTAPE 4 — Enrichissement décideurs                          │
 │ Pour chaque prospect P1 (score >= 70) :                     │
-│  - Proxycurl: search company employees by role              │
-│  - Récupère CEO, Co-founders, CoS, Head of People           │
+│  - Identification CEO, co-founders, CoS, Head of People     │
+│  - (manuel ou intégration future, sans API LinkedIn tiers)  │
 │  - Sauvegarde dans decision_makers                          │
 └─────────────────────────────────────────────────────────────┘
                             ↓
@@ -220,7 +219,6 @@ talqo-hunter/
 │   └── layout.tsx
 ├── lib/
 │   ├── claude.ts                       # Wrapper Claude API
-│   ├── proxycurl.ts                    # Wrapper Proxycurl
 │   ├── supabase/
 │   │   ├── client.ts
 │   │   └── server.ts
@@ -255,9 +253,6 @@ SUPABASE_SERVICE_ROLE_KEY=
 
 # Claude
 ANTHROPIC_API_KEY=
-
-# Proxycurl
-PROXYCURL_API_KEY=
 
 # Resend
 RESEND_API_KEY=
@@ -520,9 +515,8 @@ Cartes (par entreprise) avec :
 7. Test manuel : `curl -H "Authorization: Bearer $CRON_SECRET" localhost:3000/api/cron/discover-prospects`
 
 ### Phase 3 — Enrichissement décideurs (jour 2, ~2h)
-1. `lib/proxycurl.ts` — wrapper API
-2. `lib/pipeline/enrichment.ts` — pour chaque P1 score >= 70, fetch décideurs
-3. Mapping role → role_category (regex sur headline)
+1. `lib/pipeline/enrichment.ts` — pour chaque P1 score >= 70, enregistrer les décideurs (flux manuel ou source à brancher)
+2. Mapping role → role_category (regex sur headline)
 
 ### Phase 4 — Génération messages (jour 2, ~2h)
 1. `lib/pipeline/message-generation.ts` — Claude Sonnet avec le template
@@ -556,7 +550,7 @@ Cartes (par entreprise) avec :
 
 - L'endpoint cron est protégé par un header `Authorization: Bearer ${CRON_SECRET}` que seul Vercel Cron connaît
 - Supabase RLS activé sur toutes les tables (seul ton utilisateur peut lire/écrire)
-- Pas de cookies LinkedIn ni de scraping LinkedIn direct (Proxycurl gère ça côté serveur tiers)
+- Pas de cookies LinkedIn ni de scraping LinkedIn direct (respect ToS ; enrichissement manuel ou source conforme à définir)
 - Respect des robots.txt pour les fetch de pages carrières
 - Throttling : 1 fetch par site max, délai 2s entre fetches
 
@@ -567,7 +561,6 @@ Cartes (par entreprise) avec :
 - Taux de réponse au M1
 - Taux de conversion M2 → beta signed
 - Coût Claude API du mois (estimation)
-- Crédits Proxycurl restants
 
 ## Commandes pour Claude Code
 

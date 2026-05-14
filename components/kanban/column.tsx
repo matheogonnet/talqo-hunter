@@ -25,7 +25,7 @@ export function KanbanColumn({ status, label, prospects }: KanbanColumnProps) {
           {label}
         </span>
         {prospects.length > 0 && (
-          <span className="text-xs text-muted-foreground/60 bg-muted/40 px-1.5 py-0.5 rounded-full">
+          <span className="text-xs text-muted-foreground bg-slate-100 px-1.5 py-0.5 rounded-full">
             {prospects.length}
           </span>
         )}
@@ -36,8 +36,8 @@ export function KanbanColumn({ status, label, prospects }: KanbanColumnProps) {
         ref={setNodeRef}
         className={`flex-1 min-h-[120px] rounded-xl border-2 border-dashed transition-colors p-1.5 space-y-1.5 ${
           isOver
-            ? 'border-primary/50 bg-primary/5'
-            : 'border-border/40 bg-muted/10'
+            ? 'border-primary bg-blue-50'
+            : 'border-slate-200 bg-slate-50/50'
         }`}
       >
         <SortableContext

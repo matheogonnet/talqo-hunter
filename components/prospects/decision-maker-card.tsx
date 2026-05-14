@@ -24,11 +24,11 @@ const CONNECTION_STATUS_LABELS: Record<ConnectionStatus, string> = {
 }
 
 const CONNECTION_STATUS_COLORS: Record<ConnectionStatus, string> = {
-  not_sent: 'bg-slate-500/15 text-slate-400',
-  sent: 'bg-blue-500/15 text-blue-400',
-  accepted: 'bg-emerald-500/15 text-emerald-400',
-  declined: 'bg-red-500/15 text-red-400',
-  no_response: 'bg-amber-500/15 text-amber-400',
+  not_sent: 'bg-slate-100 text-slate-600',
+  sent: 'bg-blue-100 text-blue-700',
+  accepted: 'bg-emerald-100 text-emerald-700',
+  declined: 'bg-red-100 text-red-700',
+  no_response: 'bg-amber-100 text-amber-700',
 }
 
 const CONNECTION_STATUS_NEXT: Record<ConnectionStatus, ConnectionStatus> = {
@@ -123,7 +123,7 @@ export function DecisionMakerCard({ decisionMaker: dm }: DecisionMakerCardProps)
       {/* Messages M1/M2/M3 */}
       <div className="p-4">
         <Tabs defaultValue="m1">
-          <TabsList className="bg-muted/30 h-8">
+          <TabsList className="bg-muted h-8">
             {(['m1', 'm2', 'm3'] as const).map((type) => {
               const msg = getMsg(type)
               return (
@@ -208,7 +208,7 @@ function MessageEditor({
         value={body}
         onChange={(e) => setBody(e.target.value)}
         onBlur={handleBlur}
-        className="min-h-[140px] text-sm bg-muted/20 border-border resize-none font-mono"
+        className="min-h-[140px] text-sm bg-muted border-border resize-none font-mono"
       />
 
       <div className="flex items-center justify-between">
@@ -237,7 +237,7 @@ function MessageEditor({
             </Button>
           )}
           {message.was_sent && (
-            <Badge className="text-xs bg-emerald-500/15 text-emerald-400 border-emerald-500/30">
+            <Badge className="text-xs bg-emerald-100 text-emerald-700 border-emerald-200">
               ✓ Envoyé
             </Badge>
           )}

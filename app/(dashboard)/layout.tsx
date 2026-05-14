@@ -2,7 +2,8 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { LogoutButton } from '@/components/ui/logout-button'
-import { LayoutDashboard, Building2, Settings, Zap } from 'lucide-react'
+import { AUTH_DISABLED } from '@/lib/auth-mode'
+import { LayoutDashboard, Building2, Settings } from 'lucide-react'
 
 /**
  * Layout principal du dashboard
@@ -16,7 +17,7 @@ export default async function DashboardLayout({
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user) redirect('/login')
+  if (!AUTH_DISABLED && !user) redirect('/login')
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
@@ -25,7 +26,7 @@ export default async function DashboardLayout({
         {/* Logo */}
         <div className="px-4 py-5 border-b border-sidebar-border">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center text-lg">
+            <div className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center text-lg">
               🎯
             </div>
             <div>
@@ -45,9 +46,13 @@ export default async function DashboardLayout({
         {/* Footer sidebar */}
         <div className="px-3 py-3 border-t border-sidebar-border space-y-2">
           <div className="px-2 py-1.5">
-            <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+            <p className="text-xs text-muted-foreground truncate">
+              {AUTH_DISABLED
+                ? 'Accès libre (auth désactivée)'
+                : (user?.email ?? '')}
+            </p>
           </div>
-          <LogoutButton />
+          {!AUTH_DISABLED ? <LogoutButton /> : null}
         </div>
       </aside>
 

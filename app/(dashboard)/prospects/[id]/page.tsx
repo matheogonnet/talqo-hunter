@@ -130,7 +130,7 @@ export default async function ProspectDetailPage({ params }: PageProps) {
           <ul className="space-y-1.5">
             {p.p1_reasons.map((reason, i) => (
               <li key={i} className="flex items-start gap-2 text-sm">
-                <span className="text-emerald-400 mt-0.5">✓</span>
+                <span className="text-emerald-600 mt-0.5">✓</span>
                 {reason}
               </li>
             ))}
@@ -179,7 +179,7 @@ export default async function ProspectDetailPage({ params }: PageProps) {
       </section>
 
       {/* Footer */}
-      <div className="text-xs text-muted-foreground/50 pt-4 border-t border-border">
+      <div className="text-xs text-muted-foreground pt-4 border-t border-border">
         Découvert {formatDistanceToNow(new Date(p.discovered_at), { locale: fr, addSuffix: true })}
         {p.discovery_source && ` via ${p.discovery_source}`}
       </div>

@@ -87,8 +87,8 @@ export function SettingsForm({
               key={sector.value}
               className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg border cursor-pointer transition-colors text-sm ${
                 sectors.includes(sector.value)
-                  ? 'border-primary/50 bg-primary/10 text-foreground'
-                  : 'border-border bg-card text-muted-foreground hover:border-border/80'
+                  ? 'border-primary bg-blue-50 text-foreground'
+                  : 'border-border bg-white text-muted-foreground hover:border-slate-300'
               }`}
             >
               <input
@@ -127,7 +127,7 @@ export function SettingsForm({
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="matheo@example.com"
-          className="bg-card border-border max-w-sm"
+          className="bg-white border-border max-w-sm"
         />
       </section>
 
@@ -168,7 +168,7 @@ export function SettingsForm({
             {recentRuns.map((run) => (
               <div
                 key={run.id}
-                className="flex items-center justify-between px-3 py-2.5 rounded-lg border border-border bg-card text-sm"
+                className="flex items-center justify-between px-3 py-2.5 rounded-lg border border-border bg-white text-sm"
               >
                 <div className="flex items-center gap-2.5">
                   {run.status === 'success' && <CheckCircle className="w-4 h-4 text-emerald-400" />}

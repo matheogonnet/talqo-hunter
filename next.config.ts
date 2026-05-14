@@ -1,8 +1,20 @@
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import type { NextConfig } from 'next'
 
+// Chemin absolu du repo — évite que Turbopack / tracing remontent au lockfile parent (ex. C:\Users\mathe\)
+const PROJECT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)))
+
 const nextConfig: NextConfig = {
+  // Limite le file tracing prod au repo (monorepo / lockfiles voisins)
+  outputFileTracingRoot: PROJECT_ROOT,
+
+  turbopack: {
+    root: PROJECT_ROOT,
+  },
+
   images: {
-    // Autorise les images de profil LinkedIn via Proxycurl
+    // Images de profil LinkedIn (media.licdn.com)
     remotePatterns: [
       {
         protocol: 'https',

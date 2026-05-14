@@ -12,7 +12,7 @@ import { createServiceClient } from '@/lib/supabase/server'
  * 1. Discovery (Claude Sonnet + web_search)
  * 2. Déduplication
  * 3. Qualification (Claude Haiku + fetch HTML)
- * 4. Enrichissement décideurs (Proxycurl)
+ * 4. Enrichissement décideurs (LinkedIn / saisie)
  * 5. Génération messages (Claude Sonnet)
  * 6. Notification email (Resend)
  */
