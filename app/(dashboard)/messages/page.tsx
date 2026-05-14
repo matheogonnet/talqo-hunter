@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
+
 export const metadata = { title: 'Messages — Talqo Hunter' }
 
 export default async function MessagesPage() {
