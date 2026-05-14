@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import LoginForm from './login-form'
 import { AUTH_DISABLED } from '@/lib/auth-mode'
+import { TalqoMark } from '@/components/brand/talqo-mark'
 
 export const metadata = { title: 'Connexion — Talqo Hunter' }
 
@@ -35,8 +36,8 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       <div className="w-full max-w-sm space-y-8">
         {/* Logo / titre */}
         <div className="text-center space-y-2">
-          <div className="mx-auto w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center">
-            <span className="text-2xl">🎯</span>
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-card p-1">
+            <TalqoMark size={40} className="h-10 w-10 rounded-md border-0" />
           </div>
           <h1 className="text-2xl font-semibold tracking-tight">Talqo Hunter</h1>
           <p className="text-muted-foreground text-sm">

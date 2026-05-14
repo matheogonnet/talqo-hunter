@@ -1,15 +1,16 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
-import { ExternalLink, Copy, Check, Send } from 'lucide-react'
+import { ExternalLink, Copy, Check, Send, Loader2, FileEdit } from 'lucide-react'
 import { toast } from 'sonner'
-import type { DecisionMakerWithMessages, ConnectionStatus } from '@/lib/types/database'
+import type { DecisionMakerWithMessages, ConnectionStatus, MessageType } from '@/lib/types/database'
 import { avatarColor } from '@/lib/utils/score'
-import { updateConnectionStatus, markMessageSent, updateMessageBody } from '@/lib/actions/decision-makers'
+import { updateConnectionStatus, markMessageSent, updateMessageBody, createDraftMessage } from '@/lib/actions/decision-makers'
 
 interface DecisionMakerCardProps {
   decisionMaker: DecisionMakerWithMessages
@@ -40,6 +41,7 @@ const CONNECTION_STATUS_NEXT: Record<ConnectionStatus, ConnectionStatus> = {
 }
 
 export function DecisionMakerCard({ decisionMaker: dm }: DecisionMakerCardProps) {
+  const router = useRouter()
   const [connectionStatus, setConnectionStatus] = useState(dm.connection_status)
   const [copied, setCopied] = useState<string | null>(null)
 
@@ -52,7 +54,7 @@ export function DecisionMakerCard({ decisionMaker: dm }: DecisionMakerCardProps)
     if (nextStatus === connectionStatus) return
 
     setConnectionStatus(nextStatus)
-    const result = await updateConnectionStatus(dm.id, nextStatus)
+    const result = await updateConnectionStatus(dm.id, nextStatus, dm.prospect_id)
     if (!result.success) {
       setConnectionStatus(connectionStatus)
       toast.error('Erreur lors de la mise à jour')
@@ -144,16 +146,17 @@ export function DecisionMakerCard({ decisionMaker: dm }: DecisionMakerCardProps)
                 {msg ? (
                   <MessageEditor
                     message={msg}
+                    prospectId={dm.prospect_id}
                     onCopy={() => handleCopy(msg.message_body, type)}
                     copied={copied === type}
                   />
                 ) : (
-                  <div className="text-center py-6 text-muted-foreground">
-                    <p className="text-sm">Message {type.toUpperCase()} non généré</p>
-                    <p className="text-xs mt-1 opacity-60">
-                      Lance un run pour générer les messages
-                    </p>
-                  </div>
+                  <EmptyMessageSlot
+                    prospectId={dm.prospect_id}
+                    decisionMakerId={dm.id}
+                    type={type}
+                    onCreated={() => router.refresh()}
+                  />
                 )}
               </TabsContent>
             )
@@ -166,10 +169,12 @@ export function DecisionMakerCard({ decisionMaker: dm }: DecisionMakerCardProps)
 
 function MessageEditor({
   message,
+  prospectId,
   onCopy,
   copied,
 }: {
   message: { id: string; message_body: string; was_sent: boolean; hook_used: string | null }
+  prospectId: string
   onCopy: () => void
   copied: boolean
 }) {
@@ -180,13 +185,13 @@ function MessageEditor({
   async function handleBlur() {
     if (body === message.message_body) return
     setSaving(true)
-    await updateMessageBody(message.id, body)
+    await updateMessageBody(message.id, body, prospectId)
     setSaving(false)
   }
 
   async function handleMarkSent() {
     setMarking(true)
-    const result = await markMessageSent(message.id)
+    const result = await markMessageSent(message.id, prospectId)
     if (!result.success) {
       toast.error('Erreur lors de la mise à jour')
     } else {
@@ -243,6 +248,44 @@ function MessageEditor({
           )}
         </div>
       </div>
+    </div>
+  )
+}
+
+function EmptyMessageSlot({
+  prospectId,
+  decisionMakerId,
+  type,
+  onCreated,
+}: {
+  prospectId: string
+  decisionMakerId: string
+  type: MessageType
+  onCreated: () => void
+}) {
+  const [loading, setLoading] = useState(false)
+
+  async function handleCreate() {
+    setLoading(true)
+    const result = await createDraftMessage(prospectId, decisionMakerId, type)
+    setLoading(false)
+    if (!result.success) {
+      toast.error('Impossible de créer le message', { description: result.error })
+      return
+    }
+    toast.success(`Message ${type.toUpperCase()} créé — tu peux l’éditer ci-dessous.`)
+    onCreated()
+  }
+
+  return (
+    <div className="rounded-lg border border-dashed border-border bg-muted/30 py-6 px-4 text-center space-y-3">
+      <p className="text-sm text-muted-foreground">
+        Aucun texte pour <strong className="text-foreground">{type.toUpperCase()}</strong>. Tu peux le rédiger à la main.
+      </p>
+      <Button type="button" size="sm" variant="secondary" className="gap-1.5" onClick={handleCreate} disabled={loading}>
+        {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileEdit className="w-3.5 h-3.5" />}
+        Créer un message vierge
+      </Button>
     </div>
   )
 }

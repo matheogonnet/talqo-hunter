@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createMutationClient } from '@/lib/supabase/mutation-client'
 import { revalidatePath } from 'next/cache'
 
 interface SaveSettingsInput {
@@ -15,7 +15,7 @@ export async function saveSettings(
   input: SaveSettingsInput
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const supabase = await createClient()
+    const supabase = await createMutationClient()
 
     // Upsert les deux clés de config
     const { error } = await supabase.from('config').upsert([

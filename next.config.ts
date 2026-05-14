@@ -18,6 +18,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'talqo.fr',
+      },
+      {
+        protocol: 'https',
         hostname: 'media.licdn.com',
       },
       {

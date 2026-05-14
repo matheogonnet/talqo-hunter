@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
+import { AddProspectDialog } from '@/components/prospects/add-prospect-dialog'
 import { Building2, Users } from 'lucide-react'
 import { scoreColor } from '@/lib/utils/score'
 import type { Prospect } from '@/lib/types/database'
@@ -24,11 +25,16 @@ export default async function ProspectsPage() {
   return (
     <div className="px-6 py-6 space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-lg font-semibold">Tous les prospects</h1>
-        <p className="text-sm text-muted-foreground">
-          {prospects.length} prospects trouvés
-        </p>
+      <div className="space-y-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h1 className="text-lg font-semibold">Tous les prospects</h1>
+            <p className="text-sm text-muted-foreground">
+              {prospects.length} fiches — ouvre une entreprise pour le détail ou ajoute une ligne.
+            </p>
+          </div>
+          <AddProspectDialog triggerLabel="Ajouter une entreprise" />
+        </div>
       </div>
 
       {/* Table */}

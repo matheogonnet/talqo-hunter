@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createManualProspect, type CreateManualProspectInput } from '@/lib/actions/prospects'
 
 /**
  * GET /api/prospects — Liste des prospects avec filtres optionnels
- * POST /api/prospects — Ajouter un prospect manuellement
+ * POST /api/prospects — Ajouter un prospect manuellement (+ contact obligatoire, même règles que l’UI)
  */
 
 export async function GET(req: NextRequest) {
@@ -36,27 +37,28 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const supabase = await createClient()
-    const body = await req.json() as { company_name?: string; website?: string; sector?: string }
+    const body = (await req.json()) as Partial<CreateManualProspectInput>
 
-    if (!body.company_name) {
-      return NextResponse.json({ error: 'company_name requis' }, { status: 400 })
+    const result = await createManualProspect({
+      company_name: body.company_name ?? '',
+      website: body.website ?? null,
+      linkedin_url: body.linkedin_url ?? null,
+      sector: body.sector ?? null,
+      description: body.description ?? null,
+      open_positions_count: body.open_positions_count ?? null,
+      employee_count_estimate: body.employee_count_estimate ?? null,
+      contact_full_name: body.contact_full_name ?? '',
+      contact_role: body.contact_role ?? '',
+      contact_linkedin_url: body.contact_linkedin_url ?? null,
+      contact_linkedin_headline: body.contact_linkedin_headline ?? null,
+      contact_role_category: body.contact_role_category ?? undefined,
+    })
+
+    if (!result.success) {
+      return NextResponse.json({ error: result.error ?? 'Validation ou insert échoué' }, { status: 400 })
     }
 
-    const { data, error } = await supabase
-      .from('prospects')
-      .insert({
-        company_name: body.company_name,
-        website: body.website ?? null,
-        sector: body.sector ?? null,
-        discovery_source: 'manual',
-      })
-      .select()
-      .single()
-
-    if (error) throw error
-
-    return NextResponse.json({ data }, { status: 201 })
+    return NextResponse.json({ data: { id: result.id } }, { status: 201 })
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 500 })
   }

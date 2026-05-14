@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Cursor / skills CLI (régénérables localement)
+.cursor/
+.agents/
+skills-lock.json
+Untitled

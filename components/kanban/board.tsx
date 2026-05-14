@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import {
   DndContext,
   DragEndEvent,
@@ -26,6 +26,12 @@ interface KanbanBoardProps {
 export function KanbanBoard({ columns, grouped: initialGrouped }: KanbanBoardProps) {
   const [grouped, setGrouped] = useState(initialGrouped)
   const [activeProspect, setActiveProspect] = useState<ProspectWithDecisionMakers | null>(null)
+  /** Colonne au début du drag — l’état `grouped` est déjà déplacé dans handleDragOver, donc on ne peut pas en déduire la source au drop. */
+  const dragSourceStatusRef = useRef<ProspectStatus | null>(null)
+
+  useEffect(() => {
+    setGrouped(initialGrouped)
+  }, [initialGrouped])
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
@@ -44,7 +50,12 @@ export function KanbanBoard({ columns, grouped: initialGrouped }: KanbanBoardPro
 
   function handleDragStart(event: DragStartEvent) {
     const found = findProspect(event.active.id as string)
-    if (found) setActiveProspect(found.prospect)
+    if (found) {
+      setActiveProspect(found.prospect)
+      dragSourceStatusRef.current = found.fromStatus
+    } else {
+      dragSourceStatusRef.current = null
+    }
   }
 
   function handleDragOver(event: DragOverEvent) {
@@ -79,19 +90,21 @@ export function KanbanBoard({ columns, grouped: initialGrouped }: KanbanBoardPro
     const { active, over } = event
     setActiveProspect(null)
 
-    if (!over) return
+    const sourceStatus = dragSourceStatusRef.current
+    dragSourceStatusRef.current = null
+
+    if (!over || !sourceStatus) return
 
     const activeId = active.id as string
     const toStatus = (over.data.current?.status ?? over.id) as ProspectStatus
 
-    const found = findProspect(activeId)
-    if (!found || found.fromStatus === toStatus) return
+    if (sourceStatus === toStatus) return
 
-    // Persiste en DB via Server Action
     const result = await updateProspectStatus(activeId, toStatus)
     if (!result.success) {
-      toast.error('Erreur lors de la mise à jour du status')
-      // Rollback optimiste
+      toast.error('Erreur lors de la mise à jour du status', {
+        description: result.error,
+      })
       setGrouped(initialGrouped)
     }
   }

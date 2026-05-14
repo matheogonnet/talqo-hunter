@@ -3,6 +3,7 @@
 import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { KanbanCard } from './card'
+import { LinkedInMark } from '@/components/icons/linkedin-mark'
 import type { ProspectStatus, ProspectWithDecisionMakers } from '@/lib/types/database'
 
 interface KanbanColumnProps {
@@ -20,9 +21,14 @@ export function KanbanColumn({ status, label, prospects }: KanbanColumnProps) {
   return (
     <div className="flex-shrink-0 w-64 flex flex-col gap-2">
       {/* Header colonne */}
-      <div className="flex items-center justify-between px-1">
-        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          {label}
+      <div className="flex items-center justify-between px-1 gap-1">
+        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground inline-flex items-center gap-1.5 min-w-0">
+          {(status === 'connection_sent' || status === 'connected') && (
+            <span title="Étapes côté LinkedIn" className="inline-flex shrink-0">
+              <LinkedInMark className="w-3.5 h-3.5" />
+            </span>
+          )}
+          <span className="truncate">{label}</span>
         </span>
         {prospects.length > 0 && (
           <span className="text-xs text-muted-foreground bg-slate-100 px-1.5 py-0.5 rounded-full">

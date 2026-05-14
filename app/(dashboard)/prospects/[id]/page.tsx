@@ -5,6 +5,8 @@ import { ExternalLink, Globe, Link2, Users, TrendingUp, Target } from 'lucide-re
 import type { ProspectFull } from '@/lib/types/database'
 import { scoreColor } from '@/lib/utils/score'
 import { DecisionMakerCard } from '@/components/prospects/decision-maker-card'
+import { NotesEditor } from '@/components/prospects/notes-editor'
+import { AddDecisionMakerForm } from '@/components/prospects/add-decision-maker-form'
 import { formatDistanceToNow } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
@@ -150,9 +152,12 @@ export default async function ProspectDetailPage({ params }: PageProps) {
 
       {/* Décideurs */}
       <section className="space-y-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Décideurs ({p.decision_makers?.length ?? 0})
-        </h2>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            Décideurs ({p.decision_makers?.length ?? 0})
+          </h2>
+          <AddDecisionMakerForm prospectId={p.id} />
+        </div>
         {p.decision_makers && p.decision_makers.length > 0 ? (
           <div className="space-y-4">
             {p.decision_makers
@@ -171,11 +176,9 @@ export default async function ProspectDetailPage({ params }: PageProps) {
       {/* Notes */}
       <section className="space-y-3">
         <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Notes
+          Notes (éditables)
         </h2>
-        <p className="text-sm text-muted-foreground">
-          {p.notes ?? 'Aucune note.'}
-        </p>
+        <NotesEditor prospectId={p.id} initialNotes={p.notes} />
       </section>
 
       {/* Footer */}

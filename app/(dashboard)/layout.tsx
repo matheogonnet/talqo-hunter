@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { LogoutButton } from '@/components/ui/logout-button'
+import { TalqoMark } from '@/components/brand/talqo-mark'
 import { AUTH_DISABLED } from '@/lib/auth-mode'
 import { LayoutDashboard, Building2, Settings } from 'lucide-react'
 
@@ -26,9 +27,7 @@ export default async function DashboardLayout({
         {/* Logo */}
         <div className="px-4 py-5 border-b border-sidebar-border">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center text-lg">
-              🎯
-            </div>
+            <TalqoMark size={32} className="w-8 h-8" />
             <div>
               <p className="text-sm font-semibold leading-none">Talqo Hunter</p>
               <p className="text-xs text-muted-foreground mt-0.5">Prospection P1</p>
