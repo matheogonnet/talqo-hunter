@@ -23,7 +23,7 @@ export default async function DashboardPage() {
         priority
       )
     `)
-    .not('status', 'in', '("rejected","archived")')
+    .not('status', 'in', '("archived")')
     .order('p1_score', { ascending: false })
 
   if (error) {
@@ -50,12 +50,12 @@ export default async function DashboardPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="px-6 py-4 border-b border-border space-y-3">
+      <div className="px-4 sm:px-6 py-4 border-b border-border">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <h1 className="text-lg font-semibold">Pipeline de prospection</h1>
             <p className="text-sm text-muted-foreground">
-              {prospects.length} prospects actifs — glisse les cartes pour changer d’étape.
+              {prospects.length} prospects actifs — glisse les cartes pour changer d&apos;étape.
             </p>
           </div>
           <AddProspectDialog />

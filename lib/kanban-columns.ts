@@ -9,4 +9,5 @@ export const KANBAN_COLUMNS: { status: ProspectStatus; label: string }[] = [
   { status: 'm2_sent', label: 'M2 envoyé' },
   { status: 'm3_sent', label: 'M3 envoyé' },
   { status: 'beta_signed', label: 'Beta signé 🎉' },
+  { status: 'rejected', label: 'Refusé 🚫' },
 ]

@@ -8,6 +8,7 @@ import {
   DragOverlay,
   DragStartEvent,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   closestCorners,
@@ -34,7 +35,8 @@ export function KanbanBoard({ columns, grouped: initialGrouped }: KanbanBoardPro
   }, [initialGrouped])
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 8 } })
   )
 
   const findProspect = useCallback(
@@ -117,7 +119,7 @@ export function KanbanBoard({ columns, grouped: initialGrouped }: KanbanBoardPro
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex gap-3 h-full overflow-x-auto px-6 py-4 scrollbar-thin">
+      <div className="flex gap-3 h-full overflow-x-auto px-4 sm:px-6 py-4 scrollbar-thin" style={{ WebkitOverflowScrolling: 'touch' }}>
         {columns.map((col) => (
           <KanbanColumn
             key={col.status}

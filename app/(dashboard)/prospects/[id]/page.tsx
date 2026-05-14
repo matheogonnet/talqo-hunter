@@ -7,6 +7,7 @@ import { scoreColor } from '@/lib/utils/score'
 import { DecisionMakerCard } from '@/components/prospects/decision-maker-card'
 import { NotesEditor } from '@/components/prospects/notes-editor'
 import { AddDecisionMakerForm } from '@/components/prospects/add-decision-maker-form'
+import { RejectProspectButton } from '@/components/prospects/reject-prospect-button'
 import { formatDistanceToNow } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
@@ -30,7 +31,6 @@ export default async function ProspectDetailPage({ params }: PageProps) {
   const { id } = await params
   const supabase = await createClient()
 
-  // Fetch prospect avec décideurs et leurs messages
   const { data, error } = await supabase
     .from('prospects')
     .select(`
@@ -48,23 +48,26 @@ export default async function ProspectDetailPage({ params }: PageProps) {
   const p = data as unknown as ProspectFull
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-6 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 space-y-8">
       {/* Header */}
       <div className="space-y-4">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold">{p.company_name}</h1>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold break-words">{p.company_name}</h1>
             {p.sector && (
               <p className="text-muted-foreground capitalize mt-1">
                 {p.sector.replace('_', ' ')}
               </p>
             )}
           </div>
-          {p.p1_score != null && (
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-bold ${scoreColor(p.p1_score)}`}>
-              Score P1 : {p.p1_score}/100
-            </span>
-          )}
+          <div className="flex items-center gap-2 flex-wrap shrink-0">
+            {p.p1_score != null && (
+              <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-bold ${scoreColor(p.p1_score)}`}>
+                Score P1 : {p.p1_score}/100
+              </span>
+            )}
+            <RejectProspectButton prospectId={p.id} currentStatus={p.status} />
+          </div>
         </div>
 
         {/* Liens */}
@@ -96,7 +99,7 @@ export default async function ProspectDetailPage({ params }: PageProps) {
         </div>
 
         {/* Méta infos */}
-        <div className="flex flex-wrap gap-4 text-sm">
+        <div className="flex flex-wrap gap-3 text-sm">
           {p.employee_count_estimate && (
             <span className="flex items-center gap-1.5 text-muted-foreground">
               <Users className="w-3.5 h-3.5" />
@@ -132,7 +135,7 @@ export default async function ProspectDetailPage({ params }: PageProps) {
           <ul className="space-y-1.5">
             {p.p1_reasons.map((reason, i) => (
               <li key={i} className="flex items-start gap-2 text-sm">
-                <span className="text-emerald-600 mt-0.5">✓</span>
+                <span className="text-emerald-600 mt-0.5 shrink-0">✓</span>
                 {reason}
               </li>
             ))}

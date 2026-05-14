@@ -71,8 +71,8 @@ export function DecisionMakerCard({ decisionMaker: dm }: DecisionMakerCardProps)
   return (
     <div className="rounded-xl border border-border bg-card overflow-hidden">
       {/* Header décideur */}
-      <div className="p-4 flex items-start justify-between gap-4 border-b border-border">
-        <div className="flex items-center gap-3">
+      <div className="p-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between border-b border-border">
+        <div className="flex items-center gap-3 min-w-0">
           {/* Avatar */}
           {dm.profile_picture_url ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -86,9 +86,9 @@ export function DecisionMakerCard({ decisionMaker: dm }: DecisionMakerCardProps)
               {dm.full_name.charAt(0).toUpperCase()}
             </div>
           )}
-          <div>
-            <p className="font-medium text-sm">{dm.full_name}</p>
-            <p className="text-xs text-muted-foreground">{dm.role}</p>
+          <div className="min-w-0">
+            <p className="font-medium text-sm truncate">{dm.full_name}</p>
+            <p className="text-xs text-muted-foreground truncate">{dm.role}</p>
             {dm.linkedin_headline && (
               <p className="text-xs text-muted-foreground/60 mt-0.5 line-clamp-1">
                 {dm.linkedin_headline}
@@ -97,7 +97,7 @@ export function DecisionMakerCard({ decisionMaker: dm }: DecisionMakerCardProps)
           </div>
         </div>
 
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-2 flex-wrap shrink-0">
           {/* Bouton LinkedIn */}
           {dm.linkedin_url && (
             <a
@@ -216,11 +216,11 @@ function MessageEditor({
         className="min-h-[140px] text-sm bg-muted border-border resize-none font-mono"
       />
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-2">
         <span className="text-xs text-muted-foreground/50">
           {saving ? 'Sauvegarde...' : body.length + ' caractères'}
         </span>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <Button
             variant="outline"
             size="sm"

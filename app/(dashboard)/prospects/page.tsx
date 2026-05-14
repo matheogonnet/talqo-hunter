@@ -23,7 +23,7 @@ export default async function ProspectsPage() {
   >[]
 
   return (
-    <div className="px-6 py-6 space-y-6">
+    <div className="px-4 sm:px-6 py-6 space-y-6">
       {/* Header */}
       <div className="space-y-3">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -37,67 +37,69 @@ export default async function ProspectsPage() {
         </div>
       </div>
 
-      {/* Table */}
+      {/* Table — scrollable horizontalement sur mobile */}
       <div className="rounded-xl border border-border overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-muted/40 border-b border-border">
-            <tr>
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">Entreprise</th>
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">Secteur</th>
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">Score P1</th>
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">Postes</th>
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">ATS</th>
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">Plan cible</th>
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
-            {prospects.map((p) => (
-              <tr key={p.id} className="hover:bg-muted/20 transition-colors">
-                <td className="px-4 py-3">
-                  <Link
-                    href={`/prospects/${p.id}`}
-                    className="flex items-center gap-2 font-medium hover:text-primary transition-colors"
-                  >
-                    <Building2 className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
-                    {p.company_name}
-                  </Link>
-                </td>
-                <td className="px-4 py-3 text-muted-foreground capitalize">
-                  {p.sector?.replace('_', ' ') ?? '—'}
-                </td>
-                <td className="px-4 py-3">
-                  {p.p1_score != null ? (
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${scoreColor(p.p1_score)}`}>
-                      {p.p1_score}
-                    </span>
-                  ) : '—'}
-                </td>
-                <td className="px-4 py-3 text-muted-foreground">
-                  {p.open_positions_count != null ? (
-                    <span className="flex items-center gap-1">
-                      <Users className="w-3 h-3" />
-                      {p.open_positions_count}
-                    </span>
-                  ) : '—'}
-                </td>
-                <td className="px-4 py-3 text-muted-foreground text-xs">
-                  {p.detected_ats ?? '—'}
-                </td>
-                <td className="px-4 py-3">
-                  {p.target_plan ? (
-                    <Badge variant="outline" className="text-xs">
-                      {p.target_plan}
-                    </Badge>
-                  ) : '—'}
-                </td>
-                <td className="px-4 py-3">
-                  <StatusBadge status={p.status} />
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[640px]">
+            <thead className="bg-muted/40 border-b border-border">
+              <tr>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Entreprise</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Secteur</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Score P1</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Postes</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">ATS</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Plan cible</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {prospects.map((p) => (
+                <tr key={p.id} className="hover:bg-muted/20 transition-colors">
+                  <td className="px-4 py-3">
+                    <Link
+                      href={`/prospects/${p.id}`}
+                      className="flex items-center gap-2 font-medium hover:text-primary transition-colors"
+                    >
+                      <Building2 className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
+                      <span className="truncate max-w-[160px]">{p.company_name}</span>
+                    </Link>
+                  </td>
+                  <td className="px-4 py-3 text-muted-foreground capitalize whitespace-nowrap">
+                    {p.sector?.replace('_', ' ') ?? '—'}
+                  </td>
+                  <td className="px-4 py-3">
+                    {p.p1_score != null ? (
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${scoreColor(p.p1_score)}`}>
+                        {p.p1_score}
+                      </span>
+                    ) : '—'}
+                  </td>
+                  <td className="px-4 py-3 text-muted-foreground">
+                    {p.open_positions_count != null ? (
+                      <span className="flex items-center gap-1">
+                        <Users className="w-3 h-3" />
+                        {p.open_positions_count}
+                      </span>
+                    ) : '—'}
+                  </td>
+                  <td className="px-4 py-3 text-muted-foreground text-xs whitespace-nowrap">
+                    {p.detected_ats ?? '—'}
+                  </td>
+                  <td className="px-4 py-3">
+                    {p.target_plan ? (
+                      <Badge variant="outline" className="text-xs">
+                        {p.target_plan}
+                      </Badge>
+                    ) : '—'}
+                  </td>
+                  <td className="px-4 py-3">
+                    <StatusBadge status={p.status} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         {prospects.length === 0 && (
           <div className="py-12 text-center text-muted-foreground">
             <Building2 className="w-8 h-8 mx-auto mb-2 opacity-30" />
@@ -132,11 +134,11 @@ function StatusBadge({ status }: { status: string }) {
     m2_sent: 'M2 envoyé',
     m3_sent: 'M3 envoyé',
     beta_signed: 'Beta signé',
-    rejected: 'Rejeté',
+    rejected: 'Refusé',
     archived: 'Archivé',
   }
   return (
-    <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${styles[status] ?? ''}`}>
+    <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${styles[status] ?? ''}`}>
       {labels[status] ?? status}
     </span>
   )
