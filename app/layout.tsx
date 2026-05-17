@@ -2,7 +2,9 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
-import { TALQO_FAVICON_PATH } from '@/lib/brand'
+import { TALQO_FAVICON_PATH, TALQO_FAVICON_VERSION } from '@/lib/brand'
+
+const faviconHref = `${TALQO_FAVICON_PATH}?v=${TALQO_FAVICON_VERSION}`
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -18,9 +20,9 @@ export const metadata: Metadata = {
   title: 'Talqo Hunter',
   description: 'Automatise ta prospection de startups P1 pour Talqo',
   icons: {
-    icon: TALQO_FAVICON_PATH,
-    shortcut: TALQO_FAVICON_PATH,
-    apple: TALQO_FAVICON_PATH,
+    icon: [{ url: faviconHref, sizes: 'any' }],
+    shortcut: faviconHref,
+    apple: faviconHref,
   },
 }
 
