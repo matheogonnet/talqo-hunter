@@ -68,7 +68,7 @@ export default async function DashboardLayout({
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 overflow-y-auto scrollbar-thin">
+        <main className="flex flex-1 min-h-0 flex-col overflow-hidden md:overflow-y-auto scrollbar-thin">
           {children}
         </main>
 

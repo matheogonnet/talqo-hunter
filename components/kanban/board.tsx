@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import {
   DndContext,
   DragEndEvent,
@@ -12,7 +12,9 @@ import {
   useSensor,
   useSensors,
   closestCorners,
+  pointerWithin,
 } from '@dnd-kit/core'
+import type { CollisionDetection } from '@dnd-kit/core'
 import { KanbanColumn } from './column'
 import { KanbanCard } from './card'
 import type { ProspectStatus, ProspectWithDecisionMakers } from '@/lib/types/database'
@@ -22,6 +24,13 @@ import { toast } from 'sonner'
 interface KanbanBoardProps {
   columns: { status: ProspectStatus; label: string }[]
   grouped: Record<ProspectStatus, ProspectWithDecisionMakers[]>
+}
+
+/** Priorise la position du doigt (tactile), puis les coins les plus proches. */
+const kanbanCollisionDetection: CollisionDetection = (args) => {
+  const pointerHits = pointerWithin(args)
+  if (pointerHits.length > 0) return pointerHits
+  return closestCorners(args)
 }
 
 export function KanbanBoard({ columns, grouped: initialGrouped }: KanbanBoardProps) {
@@ -36,7 +45,9 @@ export function KanbanBoard({ columns, grouped: initialGrouped }: KanbanBoardPro
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
-    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 8 } })
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 280, tolerance: 12 },
+    })
   )
 
   const findProspect = useCallback(
@@ -72,7 +83,6 @@ export function KanbanBoard({ columns, grouped: initialGrouped }: KanbanBoardPro
 
     const { fromStatus } = found
 
-    // La cible peut être soit une colonne (son status), soit une carte (on cherche sa colonne)
     const toStatus = (over.data.current?.status ?? overId) as ProspectStatus
 
     if (fromStatus === toStatus) return
@@ -111,15 +121,35 @@ export function KanbanBoard({ columns, grouped: initialGrouped }: KanbanBoardPro
     }
   }
 
+  function handleDragCancel() {
+    setActiveProspect(null)
+    dragSourceStatusRef.current = null
+    setGrouped(initialGrouped)
+  }
+
+  const autoScroll = useMemo(
+    () => ({
+      threshold: { x: 0.12, y: 0.2 },
+      acceleration: 12,
+      interval: 8,
+    }),
+    []
+  )
+
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCorners}
+      collisionDetection={kanbanCollisionDetection}
+      autoScroll={autoScroll}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
+      onDragCancel={handleDragCancel}
     >
-      <div className="flex gap-3 h-full overflow-x-auto px-4 sm:px-6 py-4 scrollbar-thin" style={{ WebkitOverflowScrolling: 'touch' }}>
+      <div
+        className="flex h-full min-h-0 snap-x snap-mandatory gap-3 overflow-x-auto overflow-y-hidden px-3 py-3 scroll-pl-3 scroll-pr-3 touch-pan-x overscroll-x-contain scrollbar-thin sm:gap-4 sm:px-6 sm:py-4"
+        style={{ WebkitOverflowScrolling: 'touch' }}
+      >
         {columns.map((col) => (
           <KanbanColumn
             key={col.status}
@@ -130,10 +160,10 @@ export function KanbanBoard({ columns, grouped: initialGrouped }: KanbanBoardPro
         ))}
       </div>
 
-      <DragOverlay>
+      <DragOverlay dropAnimation={null}>
         {activeProspect && (
-          <div className="rotate-2 opacity-90">
-            <KanbanCard prospect={activeProspect} isDragging />
+          <div className="w-[min(85vw,22rem)] rotate-1 opacity-95 shadow-2xl">
+            <KanbanCard prospect={activeProspect} isDragging showDragHandle={false} />
           </div>
         )}
       </DragOverlay>

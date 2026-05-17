@@ -26,7 +26,7 @@ export default async function SettingsPage() {
     .limit(5)
 
   return (
-    <div className="max-w-2xl mx-auto px-6 py-6 space-y-8">
+    <div className="flex-1 min-h-0 overflow-y-auto max-w-2xl mx-auto px-6 py-6 space-y-8">
       <div>
         <h1 className="text-lg font-semibold">Paramètres</h1>
         <p className="text-sm text-muted-foreground">

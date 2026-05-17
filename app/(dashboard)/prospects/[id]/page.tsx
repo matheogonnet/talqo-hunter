@@ -48,7 +48,7 @@ export default async function ProspectDetailPage({ params }: PageProps) {
   const p = data as unknown as ProspectFull
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 space-y-8">
+    <div className="flex-1 min-h-0 overflow-y-auto max-w-4xl mx-auto px-4 sm:px-6 py-6 space-y-8">
       {/* Header */}
       <div className="space-y-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">

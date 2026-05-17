@@ -49,19 +49,24 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="px-4 sm:px-6 py-4 border-b border-border">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+      <div className="shrink-0 px-4 sm:px-6 py-4 border-b border-border">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <h1 className="text-lg font-semibold">Pipeline de prospection</h1>
             <p className="text-sm text-muted-foreground">
-              {prospects.length} prospects actifs — glisse les cartes pour changer d&apos;étape.
+              <span className="md:hidden">
+                {prospects.length} prospects actifs — fais défiler les colonnes puis maintiens la poignée pour déplacer une carte.
+              </span>
+              <span className="hidden md:inline">
+                {prospects.length} prospects actifs — glisse les cartes pour changer d&apos;étape.
+              </span>
             </p>
           </div>
           <AddProspectDialog />
         </div>
       </div>
-      <div className="flex-1 overflow-hidden">
+      <div className="min-h-0 flex-1 overflow-hidden">
         <KanbanBoardLoader grouped={grouped} />
       </div>
     </div>

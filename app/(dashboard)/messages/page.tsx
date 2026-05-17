@@ -50,7 +50,7 @@ export default async function MessagesPage() {
   const messages = (messagesRaw ?? []) as unknown as MessageWithDM[]
 
   return (
-    <div className="px-6 py-6 space-y-6">
+    <div className="flex-1 min-h-0 overflow-y-auto px-6 py-6 space-y-6">
       <div>
         <h1 className="text-lg font-semibold">Messages générés</h1>
         <p className="text-sm text-muted-foreground">

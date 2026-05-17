@@ -23,7 +23,7 @@ export default async function ProspectsPage() {
   >[]
 
   return (
-    <div className="px-4 sm:px-6 py-6 space-y-6">
+    <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-6 space-y-6">
       {/* Header */}
       <div className="space-y-3">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">

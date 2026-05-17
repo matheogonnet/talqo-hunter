@@ -21,45 +21,57 @@ export function KanbanColumn({ status, label, prospects }: KanbanColumnProps) {
   const isRejected = status === 'rejected'
 
   return (
-    <div className="flex-shrink-0 w-56 sm:w-64 flex flex-col gap-2">
+    <div className="flex h-full min-h-0 w-[min(85vw,20rem)] max-w-full shrink-0 snap-center snap-always flex-col gap-2 sm:w-[22rem] sm:max-w-none">
       {/* Header colonne */}
-      <div className="flex items-center justify-between px-1 gap-1">
-        <span className={`text-xs font-semibold uppercase tracking-wider inline-flex items-center gap-1.5 min-w-0 ${isRejected ? 'text-red-400' : 'text-muted-foreground'}`}>
+      <div className="flex items-center justify-between gap-1 px-1">
+        <span
+          className={`inline-flex min-w-0 items-center gap-1.5 text-xs font-semibold uppercase tracking-wider ${
+            isRejected ? 'text-red-400' : 'text-muted-foreground'
+          }`}
+        >
           {(status === 'connection_sent' || status === 'connected') && (
             <span title="Étapes côté LinkedIn" className="inline-flex shrink-0">
-              <LinkedInMark className="w-3.5 h-3.5" />
+              <LinkedInMark className="h-3.5 w-3.5" />
             </span>
           )}
           <span className="truncate">{label}</span>
         </span>
         {prospects.length > 0 && (
-          <span className={`text-xs px-1.5 py-0.5 rounded-full ${isRejected ? 'bg-red-100 text-red-500' : 'bg-slate-100 text-muted-foreground'}`}>
+          <span
+            className={`shrink-0 rounded-full px-1.5 py-0.5 text-xs ${
+              isRejected ? 'bg-red-100 text-red-500' : 'bg-slate-100 text-muted-foreground'
+            }`}
+          >
             {prospects.length}
           </span>
         )}
       </div>
 
-      {/* Zone de drop */}
+      {/* Zone de drop — scroll vertical indépendant du scroll horizontal du board */}
       <div
         ref={setNodeRef}
-        className={`flex-1 min-h-[120px] rounded-xl border-2 border-dashed transition-colors p-1.5 space-y-1.5 ${
+        className={`flex min-h-[10rem] flex-1 touch-pan-y flex-col overflow-x-hidden overflow-y-auto overscroll-y-contain rounded-xl border-2 border-dashed p-2 transition-colors sm:min-h-0 ${
           isOver
-            ? isRejected ? 'border-red-400 bg-red-50' : 'border-primary bg-blue-50'
-            : isRejected ? 'border-red-200 bg-red-50/30' : 'border-slate-200 bg-slate-50/50'
+            ? isRejected
+              ? 'border-red-400 bg-red-50'
+              : 'border-primary bg-blue-50'
+            : isRejected
+              ? 'border-red-200 bg-red-50/30'
+              : 'border-slate-200 bg-slate-50/50'
         }`}
+        style={{ WebkitOverflowScrolling: 'touch' }}
       >
-        <SortableContext
-          items={prospects.map((p) => p.id)}
-          strategy={verticalListSortingStrategy}
-        >
-          {prospects.map((prospect) => (
-            <KanbanCard key={prospect.id} prospect={prospect} />
-          ))}
+        <SortableContext items={prospects.map((p) => p.id)} strategy={verticalListSortingStrategy}>
+          <div className="flex w-full min-w-0 max-w-full flex-col gap-2">
+            {prospects.map((prospect) => (
+              <KanbanCard key={prospect.id} prospect={prospect} />
+            ))}
+          </div>
         </SortableContext>
 
         {prospects.length === 0 && (
-          <div className="h-full flex items-center justify-center py-6">
-            <p className="text-xs text-muted-foreground/30">Vide</p>
+          <div className="flex flex-1 items-center justify-center py-8">
+            <p className="text-xs text-muted-foreground/40">Glisser ici</p>
           </div>
         )}
       </div>

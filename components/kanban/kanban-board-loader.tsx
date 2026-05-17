@@ -9,11 +9,11 @@ const KanbanBoard = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex gap-3 h-full overflow-x-auto px-4 sm:px-6 py-4 scrollbar-thin">
+      <div className="flex h-full min-h-0 snap-x snap-mandatory gap-3 overflow-x-auto px-3 py-3 scrollbar-thin sm:gap-4 sm:px-6 sm:py-4">
         {KANBAN_COLUMNS.map((col) => (
           <div
             key={col.status}
-            className="flex-shrink-0 w-56 sm:w-64 h-[min(24rem,70vh)] rounded-xl border border-border bg-muted/30 animate-pulse"
+            className="h-full min-h-[10rem] w-[min(85vw,20rem)] shrink-0 snap-center rounded-xl border border-border bg-muted/30 animate-pulse sm:w-[22rem]"
             aria-hidden
           />
         ))}
