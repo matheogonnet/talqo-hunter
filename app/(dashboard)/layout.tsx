@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { LogoutButton } from '@/components/ui/logout-button'
 import { TalqoMark } from '@/components/brand/talqo-mark'
 import { AUTH_DISABLED } from '@/lib/auth-mode'
-import { LayoutDashboard, Building2, Settings } from 'lucide-react'
+import { LayoutDashboard, Building2, Users, Settings } from 'lucide-react'
 import { MobileNav } from '@/components/layout/mobile-nav'
 
 /**
@@ -51,6 +51,7 @@ export default async function DashboardLayout({
           <nav className="flex-1 px-2 py-3 space-y-0.5">
             <NavItem href="/" icon={<LayoutDashboard className="w-4 h-4" />} label="Pipeline" />
             <NavItem href="/prospects" icon={<Building2 className="w-4 h-4" />} label="Prospects" />
+            <NavItem href="/reseau" icon={<Users className="w-4 h-4" />} label="Réseau" />
             <NavItem href="/settings" icon={<Settings className="w-4 h-4" />} label="Paramètres" />
           </nav>
 

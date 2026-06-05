@@ -1,0 +1,135 @@
+{
+  "run_id": "885255db-79e5-4ebe-aa4d-b68ab950cce8",
+  "run_date": "2026-05-27",
+  "sector": "Services aux entreprises (nettoyage, sécurité, facility)",
+  "status": "pending_db_resume",
+  "note": "Supabase project was paused (521 error). Resume at https://supabase.com/dashboard/project/pqacwpwrquxdbzlzvufv then run insert_pipeline_results.sh",
+
+  "prospects": [
+    {
+      "company_name": "Anticimex France",
+      "website": "https://www.anticimex.com/fr-fr/",
+      "employee_count_estimate": 156,
+      "employee_count_range": "100-200",
+      "open_positions_count": 6,
+      "detected_ats": "none",
+      "sector": "services_entreprises",
+      "description": "Leader de la lutte antiparasitaire en France (dératisation, désinsectisation, protection des denrées). Filiale du groupe suédois Anticimex.",
+      "p1_score": 80,
+      "p1_reasons": ["no_ats", "5+_postes", "growth_signal", "secteur_forte_rh"],
+      "target_plan": "Premium",
+      "status": "new",
+      "discovery_source": "web_search",
+      "notes": "Recrute activement sur FranceTravail et WTTJ. Aucun ATS détecté.",
+      "decision_maker": {
+        "full_name": "Pierre Vasseur",
+        "role": "Directeur Général",
+        "role_category": "ceo",
+        "linkedin_url": "https://fr.linkedin.com/in/pierre-vasseur-89aa9631",
+        "priority": 1
+      },
+      "m1_message": "Bonjour Pierre,\n\nJ'ai vu qu'Anticimex France recrute plusieurs techniciens partout en France — sans ATS centralisé. Chez Talqo, on aide les PME à piloter leurs recrutements sans logiciel complexe.\n\nDispo 15 min cette semaine ?\n\nMathéo — Consultant @Deloitte",
+      "m1_hook": "recrutement_actif_sans_ats_5+_postes"
+    },
+    {
+      "company_name": "SEGID Propreté",
+      "website": "https://www.segid.fr/",
+      "employee_count_estimate": 152,
+      "employee_count_range": "100-200",
+      "open_positions_count": 4,
+      "detected_ats": "none",
+      "sector": "services_entreprises",
+      "description": "Entreprise normande de nettoyage industriel et tertiaire depuis 1942. Basée à Hérouville-Saint-Clair (Calvados). Plus de 300 agents, 150 000 m² nettoyés par jour.",
+      "p1_score": 80,
+      "p1_reasons": ["no_ats", "5+_postes", "secteur_forte_rh", "growth_signal"],
+      "target_plan": "Premium",
+      "status": "new",
+      "discovery_source": "web_search",
+      "notes": "Recrute régulièrement agents de propreté. Aucun ATS détecté. Hérouville-Saint-Clair, Normandie.",
+      "decision_maker": {
+        "full_name": "Marie-Laure Léau",
+        "role": "Co-gérante / Responsable administrative",
+        "role_category": "ceo",
+        "linkedin_url": "https://fr.linkedin.com/in/marie-laure-l%C3%A9au-79940875",
+        "priority": 1
+      },
+      "m1_message": "Bonjour Marie-Laure,\n\nSEGID Propreté recrute régulièrement des agents — j'ai vu plusieurs offres actives sans système centralisé. Talqo aide les PME propreté à structurer ça simplement.\n\n15 min d'échange possible ?\n\nMathéo — Consultant @Deloitte",
+      "m1_hook": "recrutement_actif_sans_ats_nettoyage"
+    },
+    {
+      "company_name": "AUREMA Nettoyage",
+      "website": "https://www.aurema-nettoyage.fr/",
+      "employee_count_estimate": 80,
+      "employee_count_range": "50-150",
+      "open_positions_count": 3,
+      "detected_ats": "wttj_only",
+      "sector": "services_entreprises",
+      "description": "Société de nettoyage industriel et de services aux entreprises. Recrutement actif sur WTTJ sans ATS propriétaire.",
+      "p1_score": 63,
+      "p1_reasons": ["wttj_signal", "3-4_postes", "secteur_forte_rh"],
+      "target_plan": "Smart",
+      "status": "new",
+      "discovery_source": "web_search",
+      "notes": "Postes WTTJ actifs. Pas d'ATS propriétaire détecté.",
+      "decision_maker": {
+        "full_name": "Luc Randrianatoavina",
+        "role": "Gérant / Directeur",
+        "role_category": "ceo",
+        "linkedin_url": "https://www.linkedin.com/in/luc-randrianatoavina-936696b8/",
+        "priority": 1
+      },
+      "m1_message": "Bonjour Luc,\n\nAUREMA recrute activement des agents sur WTTJ — plusieurs postes ouverts. Talqo aide les entreprises de nettoyage à gérer leurs recrutements sans se noyer dans les outils.\n\nOn peut en parler rapidement ?\n\nMathéo — Consultant @Deloitte",
+      "m1_hook": "recrutement_actif_wttj_sans_ats"
+    },
+    {
+      "company_name": "Groupe Facility",
+      "website": "https://www.groupefacility.fr/",
+      "employee_count_estimate": 69,
+      "employee_count_range": "50-150",
+      "open_positions_count": 3,
+      "detected_ats": "none",
+      "sector": "services_entreprises",
+      "description": "PME spécialisée dans le facility management et les services aux entreprises (nettoyage, maintenance, accueil). Recrute sans ATS.",
+      "p1_score": 63,
+      "p1_reasons": ["no_ats", "3-4_postes", "secteur_forte_rh"],
+      "target_plan": "Smart",
+      "status": "new",
+      "discovery_source": "web_search",
+      "notes": "Plusieurs postes ouverts. Aucun ATS détecté.",
+      "decision_maker": {
+        "full_name": "Vincent Rivière",
+        "role": "Co-gérant",
+        "role_category": "ceo",
+        "linkedin_url": "https://fr.linkedin.com/in/vincent-rivi%C3%A8re-05893574",
+        "priority": 1
+      },
+      "m1_message": "Bonjour Vincent,\n\nJ'ai vu que Groupe Facility a plusieurs postes ouverts — vous recrutez sans ATS centralisé. Talqo aide les PME facility à structurer ce process sans investissement lourd.\n\nDispo 15 min ?\n\nMathéo — Consultant @Deloitte",
+      "m1_hook": "recrutement_actif_sans_ats_facility"
+    },
+    {
+      "company_name": "STS Société Travail Services",
+      "website": "https://www.sts-travail.fr/",
+      "employee_count_estimate": 47,
+      "employee_count_range": "20-50",
+      "open_positions_count": 2,
+      "detected_ats": "none",
+      "sector": "services_entreprises",
+      "description": "PME de services aux entreprises (propreté, maintenance, logistique). Recrute directement sur FranceTravail sans ATS.",
+      "p1_score": 63,
+      "p1_reasons": ["no_ats", "2_postes", "secteur_forte_rh", "wttj_signal"],
+      "target_plan": "Smart",
+      "status": "new",
+      "discovery_source": "web_search",
+      "notes": "Offres visibles sur FranceTravail. Aucun ATS détecté.",
+      "decision_maker": {
+        "full_name": "Virginie Pereira",
+        "role": "Directrice",
+        "role_category": "ceo",
+        "linkedin_url": "https://www.linkedin.com/in/virginie-pereira-6881a0122/",
+        "priority": 1
+      },
+      "m1_message": "Bonjour Virginie,\n\nSTS recrute activement — plusieurs offres visibles sur France Travail. Talqo aide les structures comme la vôtre à piloter les candidatures sans logiciel complexe.\n\n15 min d'échange cette semaine ?\n\nMathéo — Consultant @Deloitte",
+      "m1_hook": "recrutement_actif_francetravail_sans_ats"
+    }
+  ]
+}

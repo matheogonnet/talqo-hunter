@@ -53,6 +53,15 @@ export type TargetPlan = 'Smart' | 'Premium'
 
 export type CronRunStatus = 'running' | 'success' | 'failed'
 
+export type LeverType =
+  | 'founder'
+  | 'recruiter'
+  | 'hr'
+  | 'prescriber'
+  | 'ambassador'
+  | 'partner'
+  | 'other'
+
 // ---- Tables ----
 
 export interface Prospect {
@@ -132,6 +141,26 @@ export interface GeneratedMessage {
   is_validated: boolean
   was_sent: boolean
   sent_at: string | null
+}
+
+export interface NetworkContact {
+  id: string
+  created_at: string
+  updated_at: string
+
+  full_name: string
+  company: string | null
+  headline: string | null
+  linkedin_url: string | null
+  connected_at: string | null
+
+  lever_type: LeverType
+  relevance_score: number
+
+  is_contacted: boolean
+  contacted_at: string | null
+
+  notes: string | null
 }
 
 export interface CronRun {
