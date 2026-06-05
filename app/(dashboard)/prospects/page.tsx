@@ -2,20 +2,31 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { AddProspectDialog } from '@/components/prospects/add-prospect-dialog'
+import { ProspectFilters } from '@/components/prospects/prospect-filters'
 import { Building2, Users } from 'lucide-react'
 import { scoreColor } from '@/lib/utils/score'
+import { applyProspectSearchFilters } from '@/lib/search'
 import type { Prospect } from '@/lib/types/database'
 
 export const metadata = { title: 'Prospects — Talqo Hunter' }
 
-export default async function ProspectsPage() {
+interface PageProps {
+  searchParams: Promise<{ q?: string; status?: string; sector?: string }>
+}
+
+export default async function ProspectsPage({ searchParams }: PageProps) {
+  const { q, status, sector } = await searchParams
   const supabase = await createClient()
 
-  const { data } = await supabase
+  let query = supabase
     .from('prospects')
     .select('id, company_name, sector, p1_score, status, open_positions_count, target_plan, website, detected_ats, discovered_at')
     .order('p1_score', { ascending: false })
     .limit(200)
+
+  query = applyProspectSearchFilters(query, { q, status, sector })
+
+  const { data } = await query
 
   const prospects = (data ?? []) as Pick<
     Prospect,
@@ -35,6 +46,7 @@ export default async function ProspectsPage() {
           </div>
           <AddProspectDialog triggerLabel="Ajouter une entreprise" />
         </div>
+        <ProspectFilters />
       </div>
 
       {/* Table — scrollable horizontalement sur mobile */}
@@ -103,8 +115,10 @@ export default async function ProspectsPage() {
         {prospects.length === 0 && (
           <div className="py-12 text-center text-muted-foreground">
             <Building2 className="w-8 h-8 mx-auto mb-2 opacity-30" />
-            <p>Aucun prospect pour l&apos;instant</p>
-            <p className="text-xs mt-1">Lance un run depuis les Paramètres</p>
+            <p>{q || status || sector ? 'Aucun prospect ne correspond à votre recherche.' : 'Aucun prospect pour l&apos;instant'}</p>
+            {!q && !status && !sector && (
+              <p className="text-xs mt-1">Lance un run depuis les Paramètres</p>
+            )}
           </div>
         )}
       </div>

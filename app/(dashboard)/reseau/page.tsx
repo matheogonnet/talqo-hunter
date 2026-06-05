@@ -2,17 +2,17 @@ import { createClient } from '@/lib/supabase/server'
 import { AddContactDialog } from '@/components/network/add-contact-dialog'
 import { ContactCard } from '@/components/network/contact-card'
 import { NetworkFilters } from '@/components/network/network-filters'
-import type { NetworkContact, LeverType } from '@/lib/types/database'
-import { LEVER_TYPES } from '@/lib/lever-types'
+import { matchesNetworkContact } from '@/lib/search'
+import type { NetworkContact } from '@/lib/types/database'
 
 export const metadata = { title: 'Réseau — Talqo Hunter' }
 
 interface PageProps {
-  searchParams: Promise<{ lever?: string }>
+  searchParams: Promise<{ lever?: string; q?: string }>
 }
 
 export default async function ReseauPage({ searchParams }: PageProps) {
-  const { lever } = await searchParams
+  const { lever, q } = await searchParams
   const supabase = await createClient()
 
   // Fetch all contacts
@@ -48,10 +48,13 @@ export default async function ReseauPage({ searchParams }: PageProps) {
     counts[c.lever_type] = (counts[c.lever_type] ?? 0) + 1
   }
 
-  // Filtre actif
-  const filtered = lever && lever !== 'all'
-    ? contacts.filter((c) => c.lever_type === lever)
-    : contacts
+  let filtered = contacts
+  if (lever && lever !== 'all') {
+    filtered = filtered.filter((c) => c.lever_type === lever)
+  }
+  if (q?.trim()) {
+    filtered = filtered.filter((c) => matchesNetworkContact(c, q.trim()))
+  }
 
   // Sépare contactés / à contacter
   const toContact = filtered.filter((c) => !c.is_contacted)
@@ -66,7 +69,9 @@ export default async function ReseauPage({ searchParams }: PageProps) {
           <div>
             <h1 className="text-lg font-semibold">Réseau LinkedIn</h1>
             <p className="text-sm text-muted-foreground">
-              {contacts.length} contact{contacts.length > 1 ? 's' : ''} qualifiés comme leviers Talqo
+              {filtered.length === contacts.length
+                ? `${contacts.length} contact${contacts.length > 1 ? 's' : ''} qualifiés comme leviers Talqo`
+                : `${filtered.length} sur ${contacts.length} contact${contacts.length > 1 ? 's' : ''}`}
             </p>
           </div>
           <AddContactDialog />
@@ -105,7 +110,7 @@ export default async function ReseauPage({ searchParams }: PageProps) {
 
         {filtered.length === 0 && (
           <div className="text-center py-16 text-sm text-muted-foreground">
-            Aucun contact dans cette catégorie.
+            {q?.trim() ? 'Aucun contact ne correspond à votre recherche.' : 'Aucun contact dans cette catégorie.'}
           </div>
         )}
 

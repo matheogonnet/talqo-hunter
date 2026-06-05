@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createManualProspect, type CreateManualProspectInput } from '@/lib/actions/prospects'
+import { applyProspectSearchFilters } from '@/lib/search'
 
 /**
  * GET /api/prospects — Liste des prospects avec filtres optionnels
@@ -12,8 +13,9 @@ export async function GET(req: NextRequest) {
     const supabase = await createClient()
     const { searchParams } = new URL(req.url)
 
-    const status = searchParams.get('status')
-    const sector = searchParams.get('sector')
+    const q = searchParams.get('q') ?? undefined
+    const status = searchParams.get('status') ?? undefined
+    const sector = searchParams.get('sector') ?? undefined
     const limit = parseInt(searchParams.get('limit') ?? '50', 10)
 
     let query = supabase
@@ -22,8 +24,7 @@ export async function GET(req: NextRequest) {
       .order('p1_score', { ascending: false })
       .limit(Math.min(limit, 200))
 
-    if (status) query = query.eq('status', status)
-    if (sector) query = query.eq('sector', sector)
+    query = applyProspectSearchFilters(query, { q, status, sector })
 
     const { data, error } = await query
 

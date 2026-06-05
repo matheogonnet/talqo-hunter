@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { LEVER_TYPES } from '@/lib/lever-types'
-import type { LeverType } from '@/lib/types/database'
+import { SearchBar } from '@/components/shared/search-bar'
 
 export function NetworkFilters({ counts }: { counts: Record<string, number> }) {
   const router = useRouter()
@@ -30,7 +30,12 @@ export function NetworkFilters({ counts }: { counts: Record<string, number> }) {
   ]
 
   return (
-    <div className="flex gap-2 flex-wrap">
+    <div className="space-y-3">
+      <SearchBar
+        placeholder="Nom, entreprise, poste, notes…"
+        className="max-w-md"
+      />
+      <div className="flex gap-2 flex-wrap">
       {filters.map((f) => (
         <button
           key={f.value}
@@ -48,6 +53,7 @@ export function NetworkFilters({ counts }: { counts: Record<string, number> }) {
           </span>
         </button>
       ))}
+      </div>
     </div>
   )
 }
