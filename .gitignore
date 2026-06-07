@@ -45,3 +45,16 @@ next-env.d.ts
 .agents/
 skills-lock.json
 Untitled
+
+# Claude Code (settings locaux — chemins machine, ne pas exposer)
+.claude/
+
+# Fichiers temporaires pipeline (données prospects, PII, URLs internes)
+tmp_*.json
+tmp_*.sh
+tmp_*.csv
+insert_pipeline_*.sh
+
+# Migrations Supabase (contiennent données personnelles pré-peuplées)
+# Exécute-les manuellement via le SQL editor Supabase
+supabase/

@@ -28,7 +28,7 @@ export default async function ReseauPage({ searchParams }: PageProps) {
         <p className="text-sm text-destructive">
           Erreur de chargement — la table <code>network_contacts</code> existe-t-elle ?{' '}
           <a
-            href="https://supabase.com/dashboard/project/pqacwpwrquxdbzlzvufv/sql/new"
+            href="https://supabase.com/dashboard"
             target="_blank"
             rel="noopener noreferrer"
             className="underline"
