@@ -54,6 +54,7 @@ tmp_*.json
 tmp_*.sh
 tmp_*.csv
 insert_pipeline_*.sh
+*.sh
 
 # Migrations Supabase (contiennent données personnelles pré-peuplées)
 # Exécute-les manuellement via le SQL editor Supabase
